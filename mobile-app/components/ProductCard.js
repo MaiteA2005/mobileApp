@@ -3,29 +3,23 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 
-const ProductCard = () => {
+const ProductCard = ({title, price, image, onPress}) => {
     const navigation = useNavigation();
 
     return (
-        <View style={styles.container}>
-           <Image
-            source={require("../images/roze_boeket.png")}
-            style={styles.image}
-            />
-            <Text style={styles.title}>Lego bloemen</Text>
-            <Text style={styles.price}>€59,99</Text>
-            <TouchableOpacity 
-                style={styles.button}
-                onPress={() => navigation.navigate("Details")}    
-            >
-                <Text>Bekijk product</Text>
+        <View style={styles.card}>
+           <Image source={image} style={styles.image}/>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.price}>{price}</Text>
+            <TouchableOpacity style={styles.button} onPress={onPress}>
+                <Text style={styles.buttonText}>Bekijk product</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    card: {
         backgroundColor: "white",
         width: "85%",
         margin: 16,
@@ -36,8 +30,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     image: {
-        width: "90%",
-        height: 300,
+        width: "100%",
+        height: 240,
         borderRadius: 8,
         alignSelf: "center",
     },
