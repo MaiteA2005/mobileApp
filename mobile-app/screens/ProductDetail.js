@@ -18,7 +18,7 @@ const HomeScreen = ({route}) => {
             <StatusBar style="auto" />
             <Text style={styles.title}>{title}</Text>
             <Image source={image} style={styles.image}/>
-            <Text style={styles.price}>€{price}</Text>
+            <Text style={styles.price}>{price}</Text>
             <Text style={styles.description}>{description}</Text>
 
             <View style={styles.quantityContainer}>
