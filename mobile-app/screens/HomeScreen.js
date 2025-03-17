@@ -1,17 +1,66 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import{ View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import ProductCard from "../components/ProductCard";
 
-import rozeBoeketImage from "../assets/roze_boeket.png";
+/*import rozeBoeketImage from "../assets/roze_boeket.png";
 import ferrariImage from "../assets/ferrari.png";  
 import groteGolfImage from "../assets/grote_golf.png";
-import tempelImage from "../assets/tempel.png";
+import tempelImage from "../assets/tempel.png";*/
 
 
 const HomeScreen = ({ navigation }) => {
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        fetch("https://api.webflow.com/v2/sites/67aa14d7651e724602290060/products",
+        {
+            headers: {
+                Authorization:
+                "Bearer dc83da7dc800b47a6e0e20d7098cfe07cfa7a683ae9a91aea8a18125d3aaf13a",
+            }
+        })
+
+        .then((res) => res.json())
+        .then((data) => 
+            setProducts(
+                data.items.map((item) => ({
+                    id: item.product.id,
+                    title: item.product.fieldData.name,
+                    description: item.product.fieldData.description,
+                    price: (item.skus[0]?.fieldData.price.value || 0)/100,
+                    image: {uri: item.skus[0]?.fieldData["main.image"]?.url},
+                }))
+            )
+        )
+            .catch((err) => console.error("Error:", err));
+    }, []);
+
     return (
+        <View style={styles.container}>
+            <Text style={styles.heading}>Lego</Text>
+
+            <ScrollView style={styles.cardContainer}>
+                {products.map((product) => (
+                    <ProductCard 
+                        key={product.id}
+                        title={product.title}
+                        price={product.price}
+                        image={product.image}
+                        onPress={() => navigation.navigate("Details", product)}
+                    />
+                ))}
+            </ScrollView>
+            <StatusBar style="auto" /> 
+        </View>
+    );
+};
+
+    
+
+
+    /*return (
         <View style={styles.container}>
             <Text style={styles.heading}>Lego</Text>
             
@@ -65,7 +114,7 @@ const HomeScreen = ({ navigation }) => {
             <StatusBar style="auto" />
         </View>
     );
-};
+};*/
 const styles = StyleSheet.create({
     container: {
         flex: 1,
