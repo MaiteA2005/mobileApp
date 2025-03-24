@@ -1,17 +1,27 @@
 import { StatusBar } from "expo-status-bar";
 import React, {useEffect, useState} from "react";
-
-import{ View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import{ View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import ProductCard from "../components/ProductCard";
+import{ Picker } from "@react-native-picker/picker";
 
 /*import rozeBoeketImage from "../assets/roze_boeket.png";
 import ferrariImage from "../assets/ferrari.png";  
 import groteGolfImage from "../assets/grote_golf.png";
 import tempelImage from "../assets/tempel.png";*/
 
+const categoryNames = {
+    "": "Alle categorieën",
+    "67bf26428bf670e80d68204c" : "Architecture",
+    "67bf2622b6220a4450d36f4a" : "Art",
+    "67be10fde51ac973d6383736" : "Technic",
+    "67be0f37081cbb88ba745c81" : "Botanicals",
+}
 
 const HomeScreen = ({ navigation }) => {
     const [products, setProducts] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [sortOption, setSortOption] = useState("");
 
     useEffect(() => {
         fetch("https://api.webflow.com/v2/sites/67aa14d7651e724602290060/products",
@@ -31,23 +41,67 @@ const HomeScreen = ({ navigation }) => {
                     description: item.product.fieldData.description,
                     price: (item.skus[0]?.fieldData.price.value || 0)/100,
                     image: {uri: item.skus[0]?.fieldData["main.image"]?.url},
+                    category:
+                        categoryNames[item.product.fieldData.category[0]] || "Onbekend",
                 }))
             )
         )
-            .catch((err) => console.error("Error:", err));
+            .catch(console.error);
     }, []);
+
+    const filteredProducts = products.filter(
+        (p) =>
+        (selectedCategory === "" || p.category === selectedCategory) &&
+        p.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    
+    const sortedProducts = filteredProducts.sort((a, b) => {
+        if (sortOption === "price-asc") return a.price - b.price; //prijs oplopend
+        if (sortOption === "price-desc") return b.price - a.price; //prijs aflopend
+        if (sortOption === "name-asc") return a.title.localeCompare(b.title); //naam oplopend
+        if (sortOption === "name-desc") return b.title.localeCompare(a.title); //naam aflopend
+    });
 
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Lego</Text>
-
+            <TextInput
+                style={styles.searchInput}
+                placeholder="Zoek een set..."
+                placeholderTextColor="#999"
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+            />
+            <View style={styles.pickerContainer}>
+                <Picker
+                    selectedValue={sortOption}
+                    onValueChange={setSortOption}
+                    style={styles.picker}
+                >
+                    <Picker.Item label="Prijs (laag - hoog" value="price-asc" />
+                    <Picker.Item label="Prijs (hoog - laag" value="price-desc" />
+                    <Picker.Item label="Naam (A - Z)" value="name-asc" />
+                    <Picker.Item label="Naam (Z - A)" value="name-desc" />
+                    
+                </Picker>
+            </View>
+            <View style={styles.pickerContainer}>
+                <Picker
+                    selectedValue={selectedCategory}
+                    onValueChange={setSelectedCategory}
+                    style={styles.picker}
+                >
+                    <Picker.Item label="Alle categorieën" value="" />
+                    {[...new Set(products.map((p) => p.category))].map((category) => (
+                        <Picker.Item key={category} label={category} value={category} />
+                    ))}
+                </Picker>
+            </View>
             <ScrollView style={styles.cardContainer}>
-                {products.map((product) => (
+                {sortedProducts.map((product) => (
                     <ProductCard 
                         key={product.id}
-                        title={product.title}
-                        price={product.price}
-                        image={product.image}
+                        {...product}
                         onPress={() => navigation.navigate("Details", product)}
                     />
                 ))}
@@ -56,9 +110,6 @@ const HomeScreen = ({ navigation }) => {
         </View>
     );
 };
-
-    
-
 
     /*return (
         <View style={styles.container}>
@@ -125,6 +176,24 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         margin: 16,
         textAlign: "center",
+    },
+    searchInput: {
+        backgroundColor: "#fff",
+        padding: 10,
+        borderRadius: 10,
+        fontSize: 16,
+        color: "#000",
+        width: "330",
+        alignSelf: "center",
+    },
+    pickerContainer: {
+        borderRadius: 10,
+        backgroundColor: "#ffffff",
+        width: 330,
+        paddingHorizontal: 24,
+        alignSelf: "center",
+        marginBottom: -10,
+        padding: -10,
     },
     button: {
         padding: 16,
