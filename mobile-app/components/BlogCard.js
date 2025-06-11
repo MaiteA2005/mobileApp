@@ -23,10 +23,7 @@ const BlogCard = ({ title, summary, body, date, image }) => {
           })
         }
       >
-        
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Blog")}>
-            <Text style={styles.buttonText}>Lees meer</Text>
-            </TouchableOpacity>
+        <Text style={styles.buttonText}>Lees meer</Text>
       </TouchableOpacity>
     </View>
   );
@@ -44,7 +41,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  
+
   image: {
     width: "100%",
     height: 180,
@@ -72,7 +69,7 @@ const styles = StyleSheet.create({
 
   button: {
     marginTop: 5,
-    padding: 7,
+    padding: 13,
     borderRadius: 8,
     width: "100%",
     backgroundColor: "lightblue",
@@ -82,6 +79,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "black",
     fontWeight: "bold",
+    fontSize: 16,
+    textAlign: "center",
 },
 });
 

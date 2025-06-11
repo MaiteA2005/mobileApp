@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 220,
     borderRadius: 10,
+    marginTop: 8,
     marginBottom: 16,
   },
   title: {
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     lineHeight: 24,
+    marginBottom: 20,
   },
   summary: {
     fontSize: 16,

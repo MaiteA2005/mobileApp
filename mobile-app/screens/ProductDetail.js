@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import{ View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import{ View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 
 const HomeScreen = ({route}) => {
     const { title, price, image, description } = route.params;
@@ -18,7 +18,7 @@ const HomeScreen = ({route}) => {
             <StatusBar style="auto" />
             <Text style={styles.title}>{title}</Text>
             <Image source={image} style={styles.image}/>
-            <Text style={styles.price}>{price}</Text>
+            <Text style={styles.price}>€{price}</Text>
             <Text style={styles.description}>{description}</Text>
 
             <View style={styles.quantityContainer}>
@@ -31,7 +31,7 @@ const HomeScreen = ({route}) => {
                 <TouchableOpacity style={styles.button} onPress={increaseQuantity}>
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
-        </View>
+            </View>
 
         <Text style={styles.totalPrice}>Totaal: €{price*quantity}</Text>
         </View>
@@ -52,21 +52,23 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     image: {
-        width: 340,
-        height: 340,
+        width: "85%",
+        height: "50%",
         borderRadius: 8,
         marginTop: 16,
     },
     price: {
-        fontSize: 18,
+        fontSize: 16,
         color: "black",
+        fontWeight: "bold",
         marginTop: 8,
     },
     description: {
         fontSize: 14,
         color: "grey",
         marginTop: 8,
-        textAlign: "center",
+        textAlign: "left",
+        lineHeight: 18,
     },
     quantityContainer: {
         flexDirection: "row",
@@ -74,18 +76,23 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     button: {
-        padding: 16,
+        padding: 10,
         borderRadius: 8,
         backgroundColor: "lightblue",
     },
     buttonText: {
-        fontSize: 18,
+        fontSize: 16,
     },
     quantity: {
-        fontSize: 18,
+        fontSize: 16,
         marginHorizontal: 16,
     },
-
+    totalPrice: {
+        fontSize: 16,
+        fontWeight: "bold",
+        marginTop: 10,
+        marginBottom: 20,
+    },
 })
 
 export default HomeScreen;

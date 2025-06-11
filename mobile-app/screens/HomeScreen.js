@@ -22,34 +22,29 @@ const HomeScreen = ({ navigation }) => {
     const [sortOption, setSortOption] = useState("");
 
     useEffect(() => {
-        fetch("https://api.webflow.com/v2/sites/67aa14d7651e724602290060/products",
-        {
-            headers: {
-                Authorization:
-                "Bearer a7b12905dfb4afcc1438211f273928a7ad53ef901851a9f8da163dca75c7ad3f",
-            }
+        fetch("https://api.webflow.com/v2/sites/67aa14d7651e724602290060/products", {
+        headers: {
+            Authorization:
+            "Bearer a7b12905dfb4afcc1438211f273928a7ad53ef901851a9f8da163dca75c7ad3f",
+        },
         })
-
         .then((res) => res.json())
         .then((data) => {
-            console.log("Webflow response:", data),
+            const filteredProducts = data.items
+            .filter((item) => item.product.fieldData.category[0] !== "684583eddfe4e67d0e0c6bae") // exclude "Coming soon"
+            .map((item) => ({
+                id: item.product.id,
+                title: item.product.fieldData.name,
+                description: item.product.fieldData.description,
+                price: (item.skus[0]?.fieldData.price.value || 0) / 100,
+                image: { uri: item.skus[0]?.fieldData["main-image"]?.url },
+                category:
+                categoryNames[item.product.fieldData.category[0]] || "Onbekend",
+            }));
 
-            setProducts(
-                data.items.map((item) => ({
-                    
-                    id: item.product.id,
-                    title: item.product.fieldData.name,
-                    description: item.product.fieldData.description,
-                    price: (item.skus[0]?.fieldData.price.value || 0)/100,
-                    image: { uri: item.skus[0]?.fieldData["main-image"]?.url },
-                    category:
-                        categoryNames[item.product.fieldData.category[0]] || "Onbekend",
-                }))
-
-            )
+            setProducts(filteredProducts);
         })
-
-            .catch(console.error);
+        .catch(console.error);
     }, []);
 
 
@@ -68,44 +63,49 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Lego</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Blog")}>
-            <Text style={styles.buttonText}>Lees onze blog</Text>
-            </TouchableOpacity>
+            <View style={styles.topButtons}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Blog")}>
+                    <Text style={styles.buttonText}>Lees onze blog</Text>
+                </TouchableOpacity>
 
-            <TextInput
-                style={styles.searchInput}
-                placeholder="Zoek een set..."
-                placeholderTextColor="#999"
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-            />
-            <View style={styles.pickerContainer}>
-                <Picker
-                    selectedValue={sortOption}
-                    onValueChange={setSortOption}
-                    style={styles.picker}
-                >
-                    <Picker.Item label="Prijs (laag - hoog" value="price-asc" />
-                    <Picker.Item label="Prijs (hoog - laag" value="price-desc" />
-                    <Picker.Item label="Naam (A - Z)" value="name-asc" />
-                    <Picker.Item label="Naam (Z - A)" value="name-desc" />
-                    
-                </Picker>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ComingSoon")}>
+                    <Text style={styles.buttonText}>Coming Soon</Text>
+                </TouchableOpacity>
             </View>
-            <View style={styles.pickerContainer}>
-                <Picker
-                    selectedValue={selectedCategory}
-                    onValueChange={setSelectedCategory}
-                    style={styles.picker}
-                >
-                    <Picker.Item label="Alle categorieën" value="" />
-                    {[...new Set(products.map((p) => p.category))].map((category) => (
-                        <Picker.Item key={category} label={category} value={category} />
-                    ))}
-                </Picker>
-            </View>
+            
             <ScrollView style={styles.cardContainer}>
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Zoek een set..."
+                    placeholderTextColor="#999"
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                />
+                <View style={styles.pickerContainer}>
+                    <Picker
+                        selectedValue={sortOption}
+                        onValueChange={setSortOption}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="Prijs (laag - hoog)" value="price-asc" />
+                        <Picker.Item label="Prijs (hoog - laag)" value="price-desc" />
+                        <Picker.Item label="Naam (A - Z)" value="name-asc" />
+                        <Picker.Item label="Naam (Z - A)" value="name-desc" />
+                        
+                    </Picker>
+                </View>
+                <View style={styles.pickerContainer}>
+                    <Picker
+                        selectedValue={selectedCategory}
+                        onValueChange={setSelectedCategory}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="Alle categorieën" value="" />
+                        {[...new Set(products.map((p) => p.category))].map((category) => (
+                            <Picker.Item key={category} label={category} value={category} />
+                        ))}
+                    </Picker>
+                </View>
                 {sortedProducts.map((product) => (
                     <ProductCard 
                         key={product.id}
@@ -190,40 +190,48 @@ const styles = StyleSheet.create({
     },
     searchInput: {
         backgroundColor: "#fff",
-        padding: 10,
+        paddingHorizontal: 20,
         borderRadius: 10,
         fontSize: 16,
         color: "#000",
-        width: "330",
+        width: "85%",
         alignSelf: "center",
+        borderWidth: 3,
+        borderColor: "lightblue",
     },
     pickerContainer: {
         borderRadius: 10,
-        backgroundColor: "#ffffff",
-        width: 330,
-        paddingHorizontal: 24,
+        backgroundColor: "white",
+        width: "85%",
+        paddingHorizontal: 20,
         alignSelf: "center",
-        marginBottom: -10,
-        padding: -10,
+        marginTop: 10,
+        borderWidth: 3,
+        borderColor: "#FFEE90",
     },
     button: {
-        marginTop: 5,
+        marginTop: 10,
         padding: 12,
         borderRadius: 8,
-        width: "80%",
+        width: "85%",
         backgroundColor: "lightblue",
         alignSelf: "center",
         alignItems: "center",
     },
-
     buttonText: {
         color: "black",
         fontWeight: "bold",
+        fontSize: 16,
     },
     cardContainer: {
         paddingBottom: 20, 
         flexGrow: 1,
     },
+    topButtons: {
+        marginTop: 10,
+        marginBottom: 10,
+    },
+
 });
 
 export default HomeScreen;

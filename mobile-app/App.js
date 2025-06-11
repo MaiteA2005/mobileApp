@@ -9,8 +9,11 @@ import HomeScreen from "./screens/HomeScreen.js";
 import ProductDetails from "./screens/ProductDetail.js";
 import BlogScreen from "./screens/BlogScreen";
 import BlogDetails from './screens/BlogDetails';
+import ComingSoon from "./screens/ComingSoon";
+
 
 const Stack = createStackNavigator();
+
 
 export default function App() {
   return (
@@ -20,6 +23,7 @@ export default function App() {
             <Stack.Screen name="Details" component={ProductDetails} />
             <Stack.Screen name="Blog" component={BlogScreen} />
             <Stack.Screen name="BlogDetails" component={BlogDetails} />
+            <Stack.Screen name="ComingSoon" component={ComingSoon} />
           </Stack.Navigator>
         </NavigationContainer>
   );

@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: "100%",
-        height: 240,
+        height: 245,
         borderRadius: 8,
         alignSelf: "center",
     },
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 8,
-        padding: 16,
+        padding: 12,
         borderRadius: 8,
         width: "75%",
         backgroundColor: "lightblue",
@@ -60,7 +60,11 @@ const styles = StyleSheet.create({
         color: "black",
         fontWeight: "bold",
     },
+    buttonText: {
+        color: "black",
+        fontWeight: "semibold",
+    },
+    
 });
-
 
 export default ProductCard;
