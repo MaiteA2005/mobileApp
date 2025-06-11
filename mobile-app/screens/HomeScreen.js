@@ -86,7 +86,7 @@ const HomeScreen = ({ navigation }) => {
                     onValueChange={setSelectedCategory}
                     style={styles.picker}
                 >
-                    <Picker.Item label="Alle categorieën" value="" />
+                    <Picker.Item label="Alle categorieën hallo" value="" />
                     {[...new Set(products.map((p) => p.category))].map((category) => (
                         <Picker.Item key={category} label={category} value={category} />
                     ))}
