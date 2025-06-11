@@ -6,6 +6,7 @@ import{ Picker } from "@react-native-picker/picker";
 
 const categoryNames = {
     "": "Alle categorieën",
+    "684583eddfe4e67d0e0c6bae" : "Coming soon",
     "67bf26428bf670e80d68204c" : "Architecture",
     "67bf2622b6220a4450d36f4a" : "Art",
     "67be10fde51ac973d6383736" : "Technic",
@@ -86,7 +87,7 @@ const HomeScreen = ({ navigation }) => {
                     onValueChange={setSelectedCategory}
                     style={styles.picker}
                 >
-                    <Picker.Item label="Alle categorieën hallo" value="" />
+                    <Picker.Item label="Alle categorieën" value="" />
                     {[...new Set(products.map((p) => p.category))].map((category) => (
                         <Picker.Item key={category} label={category} value={category} />
                     ))}
