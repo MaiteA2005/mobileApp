@@ -1,13 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import React, {useEffect, useState} from "react";
-import{ View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from "react-native";
+import{ View, Text, StyleSheet, ScrollView, TextInput } from "react-native";
 import ProductCard from "../components/ProductCard";
 import{ Picker } from "@react-native-picker/picker";
-
-/*import rozeBoeketImage from "../assets/roze_boeket.png";
-import ferrariImage from "../assets/ferrari.png";  
-import groteGolfImage from "../assets/grote_golf.png";
-import tempelImage from "../assets/tempel.png";*/
 
 const categoryNames = {
     "": "Alle categorieën",
@@ -28,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
         {
             headers: {
                 Authorization:
-                "Bearer dc83da7dc800b47a6e0e20d7098cfe07cfa7a683ae9a91aea8a18125d3aaf13a",
+                "Bearer a7b12905dfb4afcc1438211f273928a7ad53ef901851a9f8da163dca75c7ad3f",
             }
         })
 
@@ -101,7 +96,9 @@ const HomeScreen = ({ navigation }) => {
                 {sortedProducts.map((product) => (
                     <ProductCard 
                         key={product.id}
-                        {...product}
+                        title={product.title}
+                        price={`€ ${product.price.toFixed(2)}`}
+                        image={product.image}
                         onPress={() => navigation.navigate("Details", product)}
                     />
                 ))}
@@ -109,6 +106,7 @@ const HomeScreen = ({ navigation }) => {
             <StatusBar style="auto" /> 
         </View>
     );
+
 };
 
     /*return (

@@ -8,7 +8,7 @@ const ProductCard = ({title, price, image, onPress}) => {
 
     return (
         <View style={styles.card}>
-           <Image source={image} style={styles.image}/>
+            <Image source={image} style={styles.image} />
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.price}>{price}</Text>
             <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -16,6 +16,8 @@ const ProductCard = ({title, price, image, onPress}) => {
             </TouchableOpacity>
         </View>
     );
+
+    
 };
 
 const styles = StyleSheet.create({
@@ -59,5 +61,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 });
+
 
 export default ProductCard;
