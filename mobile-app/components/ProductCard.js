@@ -8,7 +8,7 @@ const ProductCard = ({title, price, image, onPress}) => {
 
     return (
         <View style={styles.card}>
-            <Image source={image} style={styles.image} />
+            <Image source={{ uri: image.uri }} style={styles.image} />
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.price}>{price}</Text>
             <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         marginTop: 8,
         padding: 16,
         borderRadius: 8,
-        width: "50%",
+        width: "75%",
         backgroundColor: "lightblue",
         alignSelf: "center",
         alignItems: "center",

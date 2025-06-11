@@ -1,8 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import React, {useEffect, useState} from "react";
-import{ View, Text, StyleSheet, ScrollView, TextInput } from "react-native";
+import{ View,TouchableOpacity, Text, StyleSheet, ScrollView, TextInput } from "react-native";
 import ProductCard from "../components/ProductCard";
 import{ Picker } from "@react-native-picker/picker";
+import { Button } from "react-native";
+
 
 const categoryNames = {
     "": "Alle categorieën",
@@ -29,21 +31,27 @@ const HomeScreen = ({ navigation }) => {
         })
 
         .then((res) => res.json())
-        .then((data) => 
+        .then((data) => {
+            console.log("Webflow response:", data),
+
             setProducts(
                 data.items.map((item) => ({
+                    
                     id: item.product.id,
                     title: item.product.fieldData.name,
                     description: item.product.fieldData.description,
                     price: (item.skus[0]?.fieldData.price.value || 0)/100,
-                    image: {uri: item.skus[0]?.fieldData["main.image"]?.url},
+                    image: { uri: item.skus[0]?.fieldData["main-image"]?.url },
                     category:
                         categoryNames[item.product.fieldData.category[0]] || "Onbekend",
                 }))
+
             )
-        )
+        })
+
             .catch(console.error);
     }, []);
+
 
     const filteredProducts = products.filter(
         (p) =>
@@ -61,6 +69,10 @@ const HomeScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Lego</Text>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Blog")}>
+            <Text style={styles.buttonText}>Lees onze blog</Text>
+            </TouchableOpacity>
+
             <TextInput
                 style={styles.searchInput}
                 placeholder="Zoek een set..."
@@ -195,14 +207,19 @@ const styles = StyleSheet.create({
         padding: -10,
     },
     button: {
-        padding: 16,
-        marginBottom: 16,
-        width: "85%",
-        alignSelf: "center",
-        backgroundColor: "lightblue",
+        marginTop: 5,
+        padding: 12,
         borderRadius: 8,
+        width: "80%",
+        backgroundColor: "lightblue",
+        alignSelf: "center",
         alignItems: "center",
-    },  
+    },
+
+    buttonText: {
+        color: "black",
+        fontWeight: "bold",
+    },
     cardContainer: {
         paddingBottom: 20, 
         flexGrow: 1,
