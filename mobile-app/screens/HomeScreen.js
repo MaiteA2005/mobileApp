@@ -63,6 +63,7 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.heading}>Lego</Text>
             <View style={styles.topButtons}>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Blog")}>
                     <Text style={styles.buttonText}>Lees onze blog</Text>
@@ -70,6 +71,10 @@ const HomeScreen = ({ navigation }) => {
 
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ComingSoon")}>
                     <Text style={styles.buttonText}>Coming Soon</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Favorieten")}>
+                    <Text style={styles.buttonText}>Favorieten</Text>   
                 </TouchableOpacity>
             </View>
             
@@ -112,7 +117,13 @@ const HomeScreen = ({ navigation }) => {
                         title={product.title}
                         price={`€ ${product.price.toFixed(2)}`}
                         image={product.image}
-                        onPress={() => navigation.navigate("Details", product)}
+                        onPress={() => navigation.navigate("Details", {
+                            id: product.id,
+                            title: product.title,
+                            price: product.price.toFixed(2),
+                            image: product.image,
+                            description: product.description,
+                        })}
                     />
                 ))}
             </ScrollView>
@@ -185,12 +196,12 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 24,
         fontWeight: "bold",
-        margin: 16,
+        marginTop: 15,
+        marginBottom: -5,
         textAlign: "center",
     },
     searchInput: {
         backgroundColor: "#fff",
-        paddingHorizontal: 20,
         borderRadius: 10,
         fontSize: 16,
         color: "#000",
@@ -198,12 +209,12 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderWidth: 3,
         borderColor: "lightblue",
+        paddingLeft: 10,
     },
     pickerContainer: {
         borderRadius: 10,
         backgroundColor: "white",
         width: "85%",
-        paddingHorizontal: 20,
         alignSelf: "center",
         marginTop: 10,
         borderWidth: 3,

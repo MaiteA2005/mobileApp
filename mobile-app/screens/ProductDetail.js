@@ -1,16 +1,25 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import{ View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { useFavorieten } from "../context/FavorietenContext";
 
-const HomeScreen = ({route}) => {
-    const { title, price, image, description } = route.params;
+const ProductDetails = ({route, navigation}) => {
+    const { id, title, price, image, description } = route.params;
     const [quantity, setQuantity] = React.useState(1); //Gebruik een state voor het productaantal
+    const { addToFavorieten } = useFavorieten();
+
 
     const increaseQuantity = () => setQuantity(quantity + 1); //verhoog het aantal
     const decreaseQuantity = () => {
         if (quantity > 1) {
-            setQuantity(quantity - 1); //verlaag het aantal, maar niet lager dan 1
+            setQuantity(quantity - 1);
         }
+    };
+
+    const handleAddToFavorieten = () => {
+    const product = {id,title,price,image,description};
+        addToFavorieten(product);
+        navigation.navigate("Favorieten");
     };
 
     return (
@@ -33,7 +42,11 @@ const HomeScreen = ({route}) => {
                 </TouchableOpacity>
             </View>
 
-        <Text style={styles.totalPrice}>Totaal: €{price*quantity}</Text>
+            <Text style={styles.totalPrice}>Totaal: €{price*quantity}</Text>
+
+            <TouchableOpacity style={styles.button} onPress={handleAddToFavorieten}>
+                <Text style={styles.buttonText}>Voeg toe aan favorieten</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -52,10 +65,10 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     image: {
-        width: "85%",
-        height: "50%",
+        width: "100%",
+        height: 245,
         borderRadius: 8,
-        marginTop: 16,
+        alignSelf: "center",
     },
     price: {
         fontSize: 16,
@@ -76,7 +89,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     button: {
-        padding: 10,
+        padding: 12,
         borderRadius: 8,
         backgroundColor: "lightblue",
     },
@@ -95,4 +108,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default HomeScreen;
+export default ProductDetails;
