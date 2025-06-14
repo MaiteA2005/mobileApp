@@ -32,14 +32,16 @@ const BlogCard = ({ title, summary, body, date, image }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
-    borderRadius: 10,
+    borderRadius: 8,
     padding: 16,
     marginBottom: 16,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
-    elevation: 3,
+    elevation: 2,
+    width: "90%",
+    alignSelf: "center",
   },
 
   image: {
@@ -69,11 +71,11 @@ const styles = StyleSheet.create({
 
   button: {
     marginTop: 5,
-    padding: 13,
+    padding: 12,
     borderRadius: 8,
-    width: "100%",
+    width: "75%",
     backgroundColor: "lightblue",
-    alignItems: "center",
+    alignSelf: "center",
   },
 
   buttonText: {

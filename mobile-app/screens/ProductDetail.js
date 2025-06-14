@@ -62,11 +62,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: "bold",
-        marginTop: 16,
+        marginBottom: 8,
     },
     image: {
         width: "100%",
-        height: 245,
+        height: "40%",
         borderRadius: 8,
         alignSelf: "center",
     },
