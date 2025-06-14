@@ -30,6 +30,11 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderColor: "lightgrey",
         borderWidth: 1,
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 2,
+        elevation: 2,
     },
     image: {
         width: "100%",

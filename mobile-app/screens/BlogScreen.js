@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import BlogCard from "../components/BlogCard";
+import { Picker } from "@react-native-picker/picker";
+
 
 const BlogScreen = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState("newest");
+
 
   useEffect(() => {
     fetch(
@@ -25,14 +29,20 @@ const BlogScreen = () => {
           date: item.fieldData.date,
           image: item.fieldData["main-image"]?.url || null,
         }));
-        setBlogs(blogItems);
+        const sortedItems = blogItems.sort((a, b) => {
+          if (sortOption === "newest") return new Date(b.date) - new Date(a.date);
+          if (sortOption === "oldest") return new Date(a.date) - new Date(b.date);
+          return 0;
+        });
+
+        setBlogs(sortedItems);
         setLoading(false);
       })
       .catch((err) => {
         console.error("Fout bij ophalen van blogs:", err);
         setLoading(false);
       });
-  }, []);
+  }, [sortOption]);
 
   if (loading) {
     return (
@@ -45,6 +55,18 @@ const BlogScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>Onze Blog</Text>
+
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={sortOption}
+          onValueChange={(value) => setSortOption(value)}
+          style={styles.picker}
+        >
+          <Picker.Item label="Nieuwste eerst" value="newest" />
+          <Picker.Item label="Oudste eerst" value="oldest" />
+        </Picker>
+      </View>
+
       {blogs.map((blog) => (
         <BlogCard
           key={blog.id}
@@ -84,6 +106,16 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: "center",
     },  
+    pickerContainer: {
+        borderRadius: 10,
+        backgroundColor: "white",
+        width: "90%",
+        alignSelf: "center",
+        marginTop: 10,
+        borderWidth: 3,
+        borderColor: "#FFEE90",
+        marginBottom: 16,
+    }
 });
 
 export default BlogScreen;

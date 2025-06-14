@@ -64,22 +64,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Lego</Text>
-            <View style={styles.topButtons}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Blog")}>
-                    <Text style={styles.buttonText}>Lees onze blog</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ComingSoon")}>
-                    <Text style={styles.buttonText}>Coming Soon</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Favorieten")}>
-                    <Text style={styles.buttonText}>Favorieten</Text>   
-                </TouchableOpacity>
-            </View>
-            
-            <ScrollView style={styles.cardContainer}>
-                <TextInput
+            <TextInput
                     style={styles.searchInput}
                     placeholder="Zoek een set..."
                     placeholderTextColor="#999"
@@ -111,6 +96,8 @@ const HomeScreen = ({ navigation }) => {
                         ))}
                     </Picker>
                 </View>
+            
+            <ScrollView style={styles.cardContainer}>
                 {sortedProducts.map((product) => (
                     <ProductCard 
                         key={product.id}
@@ -197,7 +184,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
         marginTop: 15,
-        marginBottom: -5,
+        marginBottom: 15,
         textAlign: "center",
     },
     searchInput: {
